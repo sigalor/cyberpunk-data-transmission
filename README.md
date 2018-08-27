@@ -9,12 +9,14 @@ This utility first crops and color-corrects the original image, then it scans th
 
 During my exiperiments, I got 100% accuracy.
 
+## Requirements
+Linux, BASH, ImageMagick
+
+
+
 ## Participate
 To participate, please first submit a pull request which appends your name and the original PNG file you want to parse to the list below. Then, parse this PNG file, add the result to the `res` subdirectory, and finally submit a pull request for it. To stay consistent, I propose a naming scheme that follows the one from the Google Drive, i.e. if the file you downloaded is named `cp37500.png`, please call your submitted file `cp37500.txt`.
 
 After enough result files have been assembled, further effort can be made to correctly concatenate all of them.
-
-## Requirements
-Linux, BASH, ImageMagick
 
 ## Currently active parsing processes
