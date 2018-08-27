@@ -15,3 +15,6 @@ To participate, please first parse an entire original PNG file, then add the res
 that follows the one from the Google Drive, i.e. if the file you downloaded is named `cp37500.png`, please call your submitted file `cp37500.txt`.
 
 After enough result files have been assembled, further effort can be made to correctly concatenate all of them.
+
+## Requirements
+Linux, BASH, ImageMagick
