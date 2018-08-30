@@ -1,20 +1,20 @@
 # Cyberpunk data transmission
 
 ## Instructions
-Please download some images from [this Google Drive](https://photos.google.com/share/AF1QipOg6ByRA_jkfgL8cmtKiF3L1tQ-oETifnt71Sc-xY80YKLUNJrFPXVXg-wzWDhFqQ?key=SWhVRXhMX1h0LWdmSkZxVmU4VFlQeFoxdjUybHFn), created by an amazing fellow Reddit user, or [this website](https://i.miosblog.de/cdpr/index.html). As you can see, all of them are FullHD captures of the livestream currently running at [CDPROJEKTRED's Twitch](https://www.twitch.tv/cdprojektred).
+Please download [this ZIP file](https://drive.google.com/file/d/1ftg0sDJXQM4f_zPYTed210xymgyGOmGx/view) and extract the PNG images into a directory called `full`. As you can see, all of them are FullHD captures of the livestream that was running at [CDPROJEKTRED's Twitch](https://www.twitch.tv/cdprojektred).
 
-When you have an image, just pass its name to `parse-image.sh` as the first command line parameter.
-
-This utility first crops and color-corrects the original image, then it scans through the image character by character and tries to parse it by comparing it to the ones in the `chars` directory.
-
-During my exiperiments, I got 100% accuracy.
+After that, run `npm install` and finally `node index.js`. This script will look at all screenshots in order, parse them and eventually write the output to `output.png`. This is the image that arises from it:
 
 ## Requirements
-Linux, BASH, ImageMagick
+Node, at least version 8
 
-## Participate
-To participate, please first submit a pull request which appends your name and the original PNG file you want to parse to the list below. Then, parse this PNG file, add the result to the `res` subdirectory, and finally submit a pull request for it. To stay consistent, I propose a naming scheme that follows the one from the Google Drive, i.e. if the file you downloaded is named `cp37500.png`, please call your submitted file `cp37500.txt`.
+## How does it work?
+This project does not use any machine learning, but just "old" techniques, mainly [PSNR](https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio). For parsing an image (while each image has to have the dimensions 1920x1080 px), the following steps are executed.
 
-After enough result files have been assembled, further effort can be made to correctly concatenate all of them.
-
-## Currently active parsing processes
+1. Read it in grayscale, i.e. each pixel gets a value between 0 and 255. Additionally, its color is inverted.
+2. Crop the image to be 1440x1080 pixels, starting at pixel 269 on the left hand side.
+3. Move the image 2 pixels down, filling it with white at the top.
+4. As each character needs 20x40 pixels, the image consists of 72 rows and 27 columns. Every character is extracted at put into its own 20x40 pixels buffer.
+5. Using PSNR, each character is compared to each image in the `chars` directory. The one that gets the highest score (i.e. the highest degree of similarity/certainty) is accepted to be the solution, i.e. the parsed character. If the average certainty score of a row is less than 30, the entire image is discarded. This may be the case if the screenshot happens to be blurry for some reason.
+6. If the entire image has been parsed successfully, the script will try to join its stringified rows with the ones from the previous image. To do that, it tries to find the first row of the current image in the list of previous rows. If no match exists, the current image is invalid and will be discarded. Before trying to match up the rows, the script also makes sure to detect screen tearing, i.e. mostly repeated or unclear lines, which happen frequently due to Twitch's method of transmitting livestreams.
+7. After a new image's parsed lines have been appended to the previous lines, the current image data is written to `output.png` and the script continues with the next image.

@@ -1,0 +1,19 @@
+{
+  "name": "cyberpunk-data-transmission",
+  "version": "1.0.0",
+  "description": "Decoding CDPROJEKTRED's secret image.",
+  "main": "parse-image.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sigalor/cyberpunk-data-transmission.git"
+  },
+  "author": "sigalor",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^7.0.0",
+    "path": "^0.12.7",
+    "pngjs": "^3.3.3",
+    "psnr": "^0.0.1"
+  },
+  "devDependencies": {}
+}
